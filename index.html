@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KotlinDroid Studio Prep — Interactive Android Studio (Kotlin) Reviewer & Quiz</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b1120] text-slate-100">
+
+  <!-- Top App Header -->
+  <header class="sticky top-0 z-30 backdrop-blur-md bg-slate-950/85 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-emerald-500 flex items-center justify-center font-mono font-extrabold text-white shadow-md">
+          Kt
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
+            KotlinDroid Studio Prep
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">8 Core Topics</span>
+          </h1>
+          <p class="text-xs text-slate-400">RecyclerView • CheckBox • RadioButton • Spinner • Switch • Intents • Menus &amp; Toolbars • SharedPreferences</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span id="masteryBadge" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-purple-300">
+          0 / 32 Cards Mastered
+        </span>
+      </div>
+    </div>
+
+    <!-- Navigation Mode Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex flex-wrap gap-2">
+      <button data-mode="reviewer" class="nav-tab active px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+        📖 1. Reviewer &amp; Live Sandbox
+      </button>
+      <button data-mode="flashcards" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+        🗂️ 2. 3D Flashcards (32)
+      </button>
+      <button data-mode="quiz" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+        📝 3. Practice Quiz (24)
+      </button>
+      <button data-mode="matcher" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+        ⚡ 4. Syntax Matcher
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+
+    <!-- ==========================================
+         MODE 1: REVIEWER & SANDBOX SIMULATOR
+         ========================================== -->
+    <section id="mode-reviewer" class="mode-section space-y-8">
+      <!-- Search & Topic Filter Bar -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4">
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+          <div class="relative flex-1">
+            <input
+              id="reviewerSearchInput"
+              type="text"
+              placeholder="Search methods, XML attributes, or concepts (e.g., onBindViewHolder, isChecked, putExtra, apply)..."
+              class="w-full pl-4 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+            />
+          </div>
+          <a href="#sandboxSimulatorSection" class="px-4 py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-semibold text-center whitespace-nowrap transition">
+            Jump to Live Android Sandbox ↓
+          </a>
+        </div>
+        <div id="topicFilterPills" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Reviewer Cards List -->
+      <div id="reviewerCardsContainer" class="space-y-6"></div>
+
+      <!-- Live Interactive Widget & Logcat Sandbox Simulator -->
+      <div id="sandboxSimulatorSection" class="bg-slate-900/95 border border-purple-500/40 rounded-2xl p-5 sm:p-6 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              📱 Interactive Android Widget &amp; Logcat Sandbox
+            </h2>
+            <p class="text-xs text-slate-400">Interact with simulated Android widgets below to see the exact Kotlin callbacks and Logcat output triggered in real time.</p>
+          </div>
+          <button id="btnClearLogcat" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+            Clear Logcat
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Simulated Android Device Screen -->
+          <div class="lg:col-span-6 phone-frame p-4 space-y-4">
+            <!-- Toolbar & Options Menu -->
+            <div class="bg-purple-900/60 border border-purple-500/40 rounded-xl px-3.5 py-2.5 flex items-center justify-between">
+              <span class="text-xs font-bold text-white">Toolbar (supportActionBar)</span>
+              <div class="flex items-center gap-1.5">
+                <button data-menu-id="action_search" class="sim-menu-btn text-[11px] px-2 py-1 rounded bg-purple-700/60 hover:bg-purple-600 text-white">🔍 Search</button>
+                <button data-menu-id="action_settings" class="sim-menu-btn text-[11px] px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200">⋮ Settings</button>
+              </div>
+            </div>
+
+            <!-- CheckBoxes & RadioGroup Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- CheckBox Demo -->
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-1.5">
+                <div class="text-[11px] font-bold uppercase text-emerald-400">CheckBox (Multi-Select)</div>
+                <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
+                  <input id="cbKotlin" type="checkbox" checked class="sim-cb accent-purple-500" /> Kotlin
+                </label>
+                <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
+                  <input id="cbJetpack" type="checkbox" class="sim-cb accent-purple-500" /> Jetpack UI
+                </label>
+              </div>
+
+              <!-- RadioGroup Demo -->
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold uppercase text-sky-400">RadioGroup</span>
+                  <button id="simClearRadio" class="text-[10px] text-slate-400 hover:text-white underline">clearCheck()</button>
+                </div>
+                <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
+                  <input type="radio" name="simRadioYear" value="rbYear2" class="accent-sky-400" /> 2nd Year
+                </label>
+                <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
+                  <input type="radio" name="simRadioYear" value="rbYear3" checked class="accent-sky-400" /> 3rd Year
+                </label>
+              </div>
+            </div>
+
+            <!-- Spinner & Switch Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-1.5">
+                <label class="text-[11px] font-bold uppercase text-amber-400 block">Spinner (ArrayAdapter)</label>
+                <select id="simSpinner" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                  <option value="BS Computer Engineering">BS Computer Engineering</option>
+                  <option value="BS Computer Science">BS Computer Science</option>
+                  <option value="BS Information Technology">BS Information Technology</option>
+                </select>
+              </div>
+
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+                <span class="text-[11px] font-bold uppercase text-pink-400">MaterialSwitch</span>
+                <label class="flex items-center justify-between text-xs text-slate-200 cursor-pointer mt-1">
+                  <span>Dark Theme</span>
+                  <input id="simSwitchDark" type="checkbox" checked class="accent-pink-500 w-4 h-4" />
+                </label>
+              </div>
+            </div>
+
+            <!-- Intent & SharedPreferences Demo -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-2">
+              <div class="text-[11px] font-bold uppercase text-indigo-400">Intent Extras &amp; SharedPreferences</div>
+              <div class="flex gap-2">
+                <input id="simIntentInput" type="text" value="Hans Valentino" placeholder="Enter username extra..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" />
+                <button id="simSendIntentBtn" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white">putExtra &amp; Start</button>
+                <button id="simSavePrefsBtn" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-xs font-semibold text-white">prefs.apply()</button>
+              </div>
+              <div id="simIntentResult" class="text-[11px] font-mono text-indigo-300">SecondActivity received: "Hans Valentino"</div>
+              <pre id="simPrefsXmlPreview" class="text-[10px] font-mono bg-slate-950 p-2 rounded border border-slate-800 text-rose-300 overflow-x-auto"></pre>
+            </div>
+
+            <!-- RecyclerView Demo -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase text-purple-400">RecyclerView (Click row or add item)</span>
+              </div>
+              <div class="flex gap-2">
+                <input id="simRvNameInput" type="text" placeholder="New student name..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" />
+                <button id="simAddRvBtn" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-xs font-semibold text-white">+ notifyItemInserted</button>
+              </div>
+              <div id="simRecyclerList" class="space-y-1.5 max-h-36 overflow-y-auto"></div>
+            </div>
+          </div>
+
+          <!-- Simulated Android Studio Logcat Console -->
+          <div class="lg:col-span-6 bg-[#070b14] border border-slate-800 rounded-2xl p-4 flex flex-col h-[520px]">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
+              <span class="text-xs font-mono font-bold text-emerald-400">▶ Android Studio Logcat (package:mine)</span>
+              <span class="text-[11px] font-mono text-slate-500">API 34 • Kotlin</span>
+            </div>
+            <div id="logcatOutput" class="flex-1 overflow-y-auto space-y-1.5 pr-1">
+              <div class="font-mono text-xs text-emerald-400">12:00:00.000  I/MainActivity: setSupportActionBar(toolbar) initialized</div>
+              <div class="font-mono text-xs text-sky-400">12:00:00.015  D/RecyclerView: LinearLayoutManager attached (2 items bound)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MODE 2: INTERACTIVE 3D FLASHCARDS
+         ========================================== -->
+    <section id="mode-flashcards" class="mode-section hidden max-w-3xl mx-auto space-y-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <label for="fcTopicSelect" class="text-xs font-semibold text-slate-400">Deck Filter:</label>
+          <select id="fcTopicSelect" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"></select>
+        </div>
+        <div class="flex items-center gap-3 text-xs">
+          <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Mastered: <strong id="fcMasteredCount">0</strong></span>
+          <span class="px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">Needs Review: <strong id="fcReviewCount">0</strong></span>
+          <button id="fcShuffleBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">🔀 Shuffle</button>
+          <button id="fcResetBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-300 transition">Reset</button>
+        </div>
+      </div>
+
+      <!-- 3D Flip Card -->
+      <div id="flashcardContainer" class="perspective-1000 cursor-pointer select-none">
+        <div id="flashcardInner" class="flashcard-inner">
+          <!-- Front Face -->
+          <div class="flashcard-face bg-gradient-to-br from-slate-900 via-slate-900 to-purple-950/50 border-2 border-slate-700 shadow-2xl">
+            <div class="flex items-center justify-between">
+              <span id="fcFrontTopic" class="text-xs font-mono font-semibold text-purple-300 bg-purple-950/80 border border-purple-500/30 px-3 py-1 rounded-full">Topic</span>
+              <div class="flex items-center gap-2">
+                <span id="fcCardStatus"></span>
+                <span id="fcCounter" class="text-xs font-mono text-slate-400">Card 1 of 32</span>
+              </div>
+            </div>
+            <div class="my-auto py-6 text-center">
+              <p id="fcQuestionText" class="text-lg sm:text-xl font-bold text-white leading-relaxed"></p>
+            </div>
+            <div class="text-center text-xs text-slate-400">
+              Click card or press <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono">Space</kbd> to flip
+            </div>
+          </div>
+
+          <!-- Back Face -->
+          <div class="flashcard-face flashcard-back bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/50 border-2 border-emerald-500/50 shadow-2xl">
+            <div class="flex items-center justify-between">
+              <span id="fcBackTopic" class="text-xs font-mono font-semibold text-emerald-300 bg-emerald-950/80 border border-emerald-500/30 px-3 py-1 rounded-full">Answer</span>
+              <span class="text-xs font-mono text-emerald-400">Solution &amp; Syntax</span>
+            </div>
+            <div class="my-auto py-6">
+              <pre id="fcAnswerText" class="whitespace-pre-wrap font-mono text-sm sm:text-base text-emerald-100 bg-slate-950/70 border border-slate-800 rounded-xl p-4 leading-relaxed"></pre>
+            </div>
+            <div class="text-center text-xs text-slate-400">
+              Press <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono">1</kbd> Got It • <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono">2</kbd> Needs Review
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <button id="fcPrevBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition">← Previous</button>
+          <button id="fcNextBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition">Next →</button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="fcReviewBtn" class="px-4 py-2.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/40 text-xs font-semibold text-amber-300 transition">
+            ⟳ Needs Review (2)
+          </button>
+          <button id="fcGotItBtn" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold text-white transition">
+            ✔ Got It! (1)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MODE 3: PRACTICE QUIZ & EXAM MODE
+         ========================================== -->
+    <section id="mode-quiz" class="mode-section hidden max-w-3xl mx-auto space-y-6">
+      <!-- Quiz Config Bar -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <select id="quizTopicSelect" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"></select>
+          <select id="quizLengthSelect" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white">
+            <option value="all">Full Exam (All Matching Questions)</option>
+            <option value="10">Quick 10-Question Sprint</option>
+          </select>
+        </div>
+        <button id="quizRestartBtn" class="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-semibold text-white transition">
+          Restart Quiz
+        </button>
+      </div>
+
+      <!-- Active Quiz Panel -->
+      <div id="quizActivePanel" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+          <span id="quizProgressText">Question 1 of 24</span>
+          <span id="quizScoreLive" class="text-emerald-400 font-bold">Score: 0</span>
+        </div>
+        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-5">
+          <div id="quizProgressBar" class="h-full bg-gradient-to-r from-purple-500 to-emerald-400 transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <span id="quizTopicBadge" class="inline-block text-xs font-mono font-semibold text-purple-300 bg-purple-950/80 border border-purple-500/30 px-2.5 py-0.5 rounded-full mb-3">Topic</span>
+        <h3 id="quizQuestionText" class="text-base sm:text-lg font-bold text-white whitespace-pre-line mb-5"></h3>
+
+        <div id="quizOptionsContainer" class="space-y-3"></div>
+
+        <!-- Instant Rationale Feedback -->
+        <div id="quizFeedbackBox" class="hidden mt-5 p-4 rounded-xl border">
+          <div id="quizFeedbackTitle" class="font-bold text-sm mb-1"></div>
+          <p id="quizFeedbackExplanation" class="text-xs leading-relaxed"></p>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button id="quizNextBtn" class="hidden px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-bold text-white transition">
+            Next Question →
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz Summary Panel -->
+      <div id="quizSummaryPanel" class="hidden bg-slate-900/90 border border-slate-800 rounded-2xl p-8 text-center space-y-4">
+        <div class="text-xs font-mono uppercase tracking-widest text-purple-400">Exam Completed</div>
+        <div id="quizFinalScore" class="text-4xl font-extrabold text-white"></div>
+        <p id="quizFinalVerdict" class="text-sm text-slate-300 max-w-md mx-auto"></p>
+        <div class="flex flex-wrap justify-center gap-3 pt-4">
+          <button id="quizRetryMissedBtn" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white transition">
+            Retry Missed Questions
+          </button>
+          <button onclick="startNewQuiz()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-bold text-white transition">
+            Start Fresh Exam
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MODE 4: QUICK SYNTAX & METHOD MATCHER
+         ========================================== -->
+    <section id="mode-matcher" class="mode-section hidden max-w-4xl mx-auto space-y-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-white">⚡ Android Kotlin Syntax &amp; Callback Matcher</h2>
+          <p id="matcherStatusMsg" class="text-xs text-slate-400 mt-0.5">Select an Android task on the left, then click its matching Kotlin method or property on the right.</p>
+        </div>
+        <div class="flex items-center gap-3 text-xs">
+          <span class="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-mono">Score: <strong id="matcherScore">0</strong></span>
+          <span class="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-400 font-mono">Streak: <strong id="matcherStreak">0</strong>🔥</span>
+          <button id="matcherNewRoundBtn" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 font-semibold text-white transition">
+            New 6-Pair Drill
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2.5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">Android Task / Requirement</h3>
+          <div id="matcherTasksCol" class="space-y-2.5"></div>
+        </div>
+        <div class="space-y-2.5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-purple-400 px-1">Kotlin API / Method</h3>
+          <div id="matcherCodesCol" class="space-y-2.5"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 py-5 mt-12 text-center text-xs text-slate-500">
+    KotlinDroid Studio Prep • Built for Android Studio (Kotlin) Exam Review &amp; GitHub Pages Deployment
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
