@@ -97,7 +97,7 @@ code, pre, .font-mono {
 
 /* Active Tab Indicator */
 .nav-tab.active {
-  background: linear-gradient(135deg, rgba(127, 82, 255, 0.2), rgba(61, 220, 132, 0.15));
+  background: linear-gradient(135deg, rgba(127, 82, 255, 0.25), rgba(61, 220, 132, 0.2));
   border-color: #7F52FF;
   color: #ffffff;
 }

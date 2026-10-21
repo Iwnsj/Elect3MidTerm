@@ -1,5 +1,30 @@
 // KotlinDroid Studio Prep - Main Application Logic
 
+function safeGetStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function safeSetStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    // Ignore storage errors in restricted file:// contexts
+  }
+}
+
+function safeRemoveStorage(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    // Ignore
+  }
+}
+
 // --- State Management ---
 const state = {
   activeMode: "reviewer", // reviewer | flashcards | quiz | matcher
@@ -10,11 +35,11 @@ const state = {
   fcList: [...FLASHCARDS],
   fcIndex: 0,
   fcFlipped: false,
-  fcMastered: JSON.parse(localStorage.getItem("kd_fc_mastered") || "[]"),
-  fcNeedsReview: JSON.parse(localStorage.getItem("kd_fc_review") || "[]"),
+  fcMastered: safeGetStorage("kd_fc_mastered", []),
+  fcNeedsReview: safeGetStorage("kd_fc_review", []),
   // Quiz state
   quizTopic: "all",
-  quizCount: "all", // "all" | "10"
+  quizCount: "all",
   quizQuestions: [],
   quizIndex: 0,
   quizScore: 0,
@@ -33,7 +58,7 @@ const state = {
     { name: "Hans Valentino", course: "BS Computer Engineering" },
     { name: "Maria Santos", course: "BS Computer Science" }
   ],
-  simSharedPrefs: JSON.parse(localStorage.getItem("kd_sim_prefs") || '{"KEY_USER":"Hans","KEY_DARK":true}')
+  simSharedPrefs: safeGetStorage("kd_sim_prefs", { KEY_USER: "Hans", KEY_DARK: true })
 };
 
 // --- Initialization ---
@@ -65,7 +90,7 @@ function initNavigation() {
   });
 }
 
-function switchMode(mode) {
+window.switchMode = function(mode) {
   state.activeMode = mode;
   document.querySelectorAll(".nav-tab").forEach(t => {
     t.classList.toggle("active", t.getAttribute("data-mode") === mode);
@@ -73,7 +98,8 @@ function switchMode(mode) {
   document.querySelectorAll(".mode-section").forEach(sec => {
     sec.classList.toggle("hidden", sec.id !== `mode-${mode}`);
   });
-}
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 
 // ==========================================
 // MODE 1: REVIEWER & CODE GUIDE
@@ -82,10 +108,9 @@ function initReviewer() {
   const pillContainer = document.getElementById("topicFilterPills");
   const searchInput = document.getElementById("reviewerSearchInput");
 
-  // Render filter pills
   const pillsHtml = [
-    `<button data-topic="all" class="topic-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition bg-purple-600 text-white">All 8 Topics</button>`,
-    ...TOPICS.map(t => `<button data-topic="${t.id}" class="topic-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700">${t.title}</button>`)
+    `<button type="button" data-topic="all" class="topic-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition bg-purple-600 text-white">All 8 Topics</button>`,
+    ...TOPICS.map(t => `<button type="button" data-topic="${t.id}" class="topic-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700">${t.title}</button>`)
   ].join("");
   pillContainer.innerHTML = pillsHtml;
 
@@ -111,10 +136,11 @@ function initReviewer() {
 }
 
 function escapeHtml(str) {
-  return str
+  return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function renderReviewerCards() {
@@ -141,22 +167,22 @@ function renderReviewerCards() {
         <div class="flex items-center gap-3">
           <span class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/40 text-purple-300 font-bold flex items-center justify-center text-sm">${idx + 1}</span>
           <div>
-            <h3 class="text-xl font-bold text-white">${topic.title}</h3>
-            <span class="text-xs text-emerald-400 font-medium">${topic.badge}</span>
+            <h3 class="text-xl font-bold text-white">${escapeHtml(topic.title)}</h3>
+            <span class="text-xs text-emerald-400 font-medium">${escapeHtml(topic.badge)}</span>
           </div>
         </div>
-        <button onclick="jumpToTopicQuiz('${topic.id}')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-purple-600/30 border border-slate-700 hover:border-purple-500 text-slate-200 transition">
+        <button type="button" data-quiz-topic="${topic.id}" class="jump-quiz-btn text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-purple-600/30 border border-slate-700 hover:border-purple-500 text-slate-200 transition">
           Quiz This Topic →
         </button>
       </div>
 
-      <p class="text-slate-300 text-sm leading-relaxed mb-4">${topic.summary}</p>
+      <p class="text-slate-300 text-sm leading-relaxed mb-4">${escapeHtml(topic.summary)}</p>
 
       <!-- Key Takeaways -->
       <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 mb-5">
         <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 mb-2.5">Key Exam Takeaways</h4>
         <ul class="space-y-1.5 text-sm text-slate-300">
-          ${topic.keyPoints.map(kp => `<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✔</span><span>${kp}</span></li>`).join("")}
+          ${topic.keyPoints.map(kp => `<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✔</span><span>${escapeHtml(kp)}</span></li>`).join("")}
         </ul>
       </div>
 
@@ -186,7 +212,7 @@ function renderReviewerCards() {
         <div class="code-container">
           <div class="flex items-center justify-between px-3.5 py-2 bg-slate-900 border-b border-slate-800">
             <span class="text-xs font-mono text-sky-400 font-semibold">XML Layout / Resource</span>
-            <button onclick="copyCode(this)" data-code="${ encodeURIComponent(topic.xmlCode) }" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Copy XML</button>
+            <button type="button" data-code="${encodeURIComponent(topic.xmlCode)}" class="copy-code-btn text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Copy XML</button>
           </div>
           <pre class="p-3.5 text-xs font-mono text-slate-200 code-scroll overflow-x-auto"><code>${escapeHtml(topic.xmlCode)}</code></pre>
         </div>
@@ -194,18 +220,33 @@ function renderReviewerCards() {
         <div class="code-container">
           <div class="flex items-center justify-between px-3.5 py-2 bg-slate-900 border-b border-slate-800">
             <span class="text-xs font-mono text-purple-400 font-semibold">Kotlin Implementation</span>
-            <button onclick="copyCode(this)" data-code="${ encodeURIComponent(topic.kotlinCode) }" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Copy Kotlin</button>
+            <button type="button" data-code="${encodeURIComponent(topic.kotlinCode)}" class="copy-code-btn text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Copy Kotlin</button>
           </div>
           <pre class="p-3.5 text-xs font-mono text-slate-200 code-scroll overflow-x-auto"><code>${escapeHtml(topic.kotlinCode)}</code></pre>
         </div>
       </div>
     </article>
   `).join("");
+
+  // Bind "Quiz This Topic" buttons
+  container.querySelectorAll(".jump-quiz-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const topicId = btn.getAttribute("data-quiz-topic");
+      jumpToTopicQuiz(topicId);
+    });
+  });
+
+  // Bind "Copy" buttons with fallback for file:// protocol
+  container.querySelectorAll(".copy-code-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      copyCode(btn);
+    });
+  });
 }
 
 window.copyCode = function(btn) {
   const code = decodeURIComponent(btn.getAttribute("data-code"));
-  navigator.clipboard.writeText(code).then(() => {
+  const showCopied = () => {
     const original = btn.textContent;
     btn.textContent = "Copied!";
     btn.classList.add("text-emerald-400");
@@ -213,8 +254,30 @@ window.copyCode = function(btn) {
       btn.textContent = original;
       btn.classList.remove("text-emerald-400");
     }, 1500);
-  });
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(showCopied).catch(() => fallbackCopy(code, showCopied));
+  } else {
+    fallbackCopy(code, showCopied);
+  }
 };
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand("copy");
+    if (callback) callback();
+  } catch (e) {
+    // Ignore
+  }
+  document.body.removeChild(ta);
+}
 
 window.jumpToTopicQuiz = function(topicId) {
   switchMode("quiz");
@@ -270,7 +333,9 @@ function initSimulator() {
   });
 
   document.getElementById("simClearRadio").addEventListener("click", () => {
-    document.querySelectorAll("input[name='simRadioYear']").forEach(rb => rb.checked = false);
+    document.querySelectorAll("input[name='simRadioYear']").forEach(rb => {
+      rb.checked = false;
+    });
     appendLog("RadioGroup", `rgYear.clearCheck() -> checkedRadioButtonId is now -1`, "W");
   });
 
@@ -298,10 +363,7 @@ function initSimulator() {
   // 7. SharedPreferences Simulator
   function renderSimPrefs() {
     document.getElementById("simPrefsXmlPreview").textContent =
-      `<map>
-  <string name="KEY_USER">${state.simSharedPrefs.KEY_USER}</string>
-  <boolean name="KEY_DARK" value="${state.simSharedPrefs.KEY_DARK}" />
-</map>`;
+      `<map>\n  <string name="KEY_USER">${state.simSharedPrefs.KEY_USER}</string>\n  <boolean name="KEY_DARK" value="${state.simSharedPrefs.KEY_DARK}" />\n</map>`;
   }
   renderSimPrefs();
 
@@ -309,7 +371,7 @@ function initSimulator() {
     const userVal = document.getElementById("simIntentInput").value || "Hans";
     const darkVal = simSwitch.checked;
     state.simSharedPrefs = { KEY_USER: userVal, KEY_DARK: darkVal };
-    localStorage.setItem("kd_sim_prefs", JSON.stringify(state.simSharedPrefs));
+    safeSetStorage("kd_sim_prefs", state.simSharedPrefs);
     renderSimPrefs();
     appendLog("SharedPrefs", `prefs.edit().putString("KEY_USER", "${userVal}").putBoolean("KEY_DARK", ${darkVal}).apply()`, "I");
   });
@@ -412,7 +474,6 @@ function renderFlashcard() {
   document.getElementById("fcQuestionText").textContent = card.q;
   document.getElementById("fcAnswerText").textContent = card.a;
 
-  // Status badge on card
   const statusEl = document.getElementById("fcCardStatus");
   if (state.fcMastered.includes(card.id)) {
     statusEl.textContent = "✔ Mastered";
@@ -467,16 +528,16 @@ function markFlashcard(gotIt) {
     if (!state.fcNeedsReview.includes(card.id)) state.fcNeedsReview.push(card.id);
     state.fcMastered = state.fcMastered.filter(id => id !== card.id);
   }
-  localStorage.setItem("kd_fc_mastered", JSON.stringify(state.fcMastered));
-  localStorage.setItem("kd_fc_review", JSON.stringify(state.fcNeedsReview));
+  safeSetStorage("kd_fc_mastered", state.fcMastered);
+  safeSetStorage("kd_fc_review", state.fcNeedsReview);
   nextFlashcard();
 }
 
 function resetFlashcardProgress() {
   state.fcMastered = [];
   state.fcNeedsReview = [];
-  localStorage.removeItem("kd_fc_mastered");
-  localStorage.removeItem("kd_fc_review");
+  safeRemoveStorage("kd_fc_mastered");
+  safeRemoveStorage("kd_fc_review");
   renderFlashcard();
 }
 
@@ -493,11 +554,13 @@ function initQuiz() {
   document.getElementById("quizRestartBtn").addEventListener("click", startNewQuiz);
   document.getElementById("quizNextBtn").addEventListener("click", nextQuizQuestion);
   document.getElementById("quizRetryMissedBtn").addEventListener("click", retryMissedQuestions);
+  const freshBtn = document.getElementById("quizFreshStartBtn");
+  if (freshBtn) freshBtn.addEventListener("click", startNewQuiz);
 
   startNewQuiz();
 }
 
-function startNewQuiz() {
+window.startNewQuiz = function() {
   const topic = document.getElementById("quizTopicSelect").value;
   const lengthMode = document.getElementById("quizLengthSelect").value;
 
@@ -505,7 +568,6 @@ function startNewQuiz() {
     ? [...QUIZ_QUESTIONS]
     : QUIZ_QUESTIONS.filter(q => q.topic === topic);
 
-  // Shuffle pool
   pool.sort(() => Math.random() - 0.5);
 
   if (lengthMode === "10" && pool.length > 10) {
@@ -522,7 +584,7 @@ function startNewQuiz() {
   document.getElementById("quizSummaryPanel").classList.add("hidden");
   document.getElementById("quizActivePanel").classList.remove("hidden");
   renderQuizQuestion();
-}
+};
 
 function retryMissedQuestions() {
   const missedPool = QUIZ_QUESTIONS.filter(q => state.quizMissedIds.includes(q.id));
@@ -557,7 +619,7 @@ function renderQuizQuestion() {
 
   const optionsContainer = document.getElementById("quizOptionsContainer");
   optionsContainer.innerHTML = qObj.options.map((opt, i) => `
-    <button data-idx="${i}" class="quiz-opt-btn w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-800/70 hover:bg-slate-800 hover:border-purple-500 transition flex items-start gap-3">
+    <button type="button" data-idx="${i}" class="quiz-opt-btn w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-800/70 hover:bg-slate-800 hover:border-purple-500 transition flex items-start gap-3">
       <span class="w-6 h-6 rounded-md bg-slate-900 border border-slate-700 text-xs font-mono font-bold flex items-center justify-center text-slate-300 shrink-0">${String.fromCharCode(65 + i)}</span>
       <span class="text-sm text-slate-100 font-medium">${escapeHtml(opt)}</span>
     </button>
@@ -661,6 +723,7 @@ function startNewMatcherRound() {
   state.selectedTask = null;
   state.selectedCode = null;
   state.matchedIds = [];
+  document.getElementById("matcherStatusMsg").textContent = "Select an Android task on the left, then click its matching Kotlin method or property on the right.";
   renderMatcherBoard();
 }
 
@@ -675,7 +738,7 @@ function renderMatcherBoard() {
     const isMatched = state.matchedIds.includes(item.id);
     const isSelected = state.selectedTask === item.id;
     return `
-      <button data-id="${item.id}" ${isMatched ? "disabled" : ""} class="match-card w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-800/80 text-sm text-slate-200 font-medium ${isMatched ? "matched" : ""} ${isSelected ? "selected" : ""}">
+      <button type="button" data-id="${item.id}" ${isMatched ? "disabled" : ""} class="match-card w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-800/80 text-sm text-slate-200 font-medium ${isMatched ? "matched" : ""} ${isSelected ? "selected" : ""}">
         ${escapeHtml(item.task)}
       </button>
     `;
@@ -685,7 +748,7 @@ function renderMatcherBoard() {
     const isMatched = state.matchedIds.includes(item.id);
     const isSelected = state.selectedCode === item.id;
     return `
-      <button data-id="${item.id}" ${isMatched ? "disabled" : ""} class="match-card w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900 font-mono text-xs text-purple-300 ${isMatched ? "matched" : ""} ${isSelected ? "selected" : ""}">
+      <button type="button" data-id="${item.id}" ${isMatched ? "disabled" : ""} class="match-card w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900 font-mono text-xs text-purple-300 ${isMatched ? "matched" : ""} ${isSelected ? "selected" : ""}">
         ${escapeHtml(item.code)}
       </button>
     `;

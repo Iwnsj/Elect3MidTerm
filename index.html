@@ -40,16 +40,16 @@
 
     <!-- Navigation Mode Tabs -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex flex-wrap gap-2">
-      <button data-mode="reviewer" class="nav-tab active px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+      <button type="button" data-mode="reviewer" class="nav-tab active px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
         📖 1. Reviewer &amp; Live Sandbox
       </button>
-      <button data-mode="flashcards" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+      <button type="button" data-mode="flashcards" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
         🗂️ 2. 3D Flashcards (32)
       </button>
-      <button data-mode="quiz" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+      <button type="button" data-mode="quiz" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
         📝 3. Practice Quiz (24)
       </button>
-      <button data-mode="matcher" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition">
+      <button type="button" data-mode="matcher" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
         ⚡ 4. Syntax Matcher
       </button>
     </div>
@@ -92,7 +92,7 @@
             </h2>
             <p class="text-xs text-slate-400">Interact with simulated Android widgets below to see the exact Kotlin callbacks and Logcat output triggered in real time.</p>
           </div>
-          <button id="btnClearLogcat" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+          <button type="button" id="btnClearLogcat" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
             Clear Logcat
           </button>
         </div>
@@ -104,8 +104,8 @@
             <div class="bg-purple-900/60 border border-purple-500/40 rounded-xl px-3.5 py-2.5 flex items-center justify-between">
               <span class="text-xs font-bold text-white">Toolbar (supportActionBar)</span>
               <div class="flex items-center gap-1.5">
-                <button data-menu-id="action_search" class="sim-menu-btn text-[11px] px-2 py-1 rounded bg-purple-700/60 hover:bg-purple-600 text-white">🔍 Search</button>
-                <button data-menu-id="action_settings" class="sim-menu-btn text-[11px] px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200">⋮ Settings</button>
+                <button type="button" data-menu-id="action_search" class="sim-menu-btn text-[11px] px-2 py-1 rounded bg-purple-700/60 hover:bg-purple-600 text-white">🔍 Search</button>
+                <button type="button" data-menu-id="action_settings" class="sim-menu-btn text-[11px] px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200">⋮ Settings</button>
               </div>
             </div>
 
@@ -126,7 +126,7 @@
               <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-1.5">
                 <div class="flex items-center justify-between">
                   <span class="text-[11px] font-bold uppercase text-sky-400">RadioGroup</span>
-                  <button id="simClearRadio" class="text-[10px] text-slate-400 hover:text-white underline">clearCheck()</button>
+                  <button type="button" id="simClearRadio" class="text-[10px] text-slate-400 hover:text-white underline">clearCheck()</button>
                 </div>
                 <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
                   <input type="radio" name="simRadioYear" value="rbYear2" class="accent-sky-400" /> 2nd Year
@@ -160,10 +160,10 @@
             <!-- Intent & SharedPreferences Demo -->
             <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-2">
               <div class="text-[11px] font-bold uppercase text-indigo-400">Intent Extras &amp; SharedPreferences</div>
-              <div class="flex gap-2">
-                <input id="simIntentInput" type="text" value="Hans Valentino" placeholder="Enter username extra..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" />
-                <button id="simSendIntentBtn" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white">putExtra &amp; Start</button>
-                <button id="simSavePrefsBtn" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-xs font-semibold text-white">prefs.apply()</button>
+              <div class="flex flex-wrap gap-2">
+                <input id="simIntentInput" type="text" value="Hans Valentino" placeholder="Enter username extra..." class="flex-1 min-w-[120px] bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" />
+                <button type="button" id="simSendIntentBtn" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white">putExtra &amp; Start</button>
+                <button type="button" id="simSavePrefsBtn" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-xs font-semibold text-white">prefs.apply()</button>
               </div>
               <div id="simIntentResult" class="text-[11px] font-mono text-indigo-300">SecondActivity received: "Hans Valentino"</div>
               <pre id="simPrefsXmlPreview" class="text-[10px] font-mono bg-slate-950 p-2 rounded border border-slate-800 text-rose-300 overflow-x-auto"></pre>
@@ -176,7 +176,7 @@
               </div>
               <div class="flex gap-2">
                 <input id="simRvNameInput" type="text" placeholder="New student name..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" />
-                <button id="simAddRvBtn" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-xs font-semibold text-white">+ notifyItemInserted</button>
+                <button type="button" id="simAddRvBtn" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-xs font-semibold text-white">+ notifyItemInserted</button>
               </div>
               <div id="simRecyclerList" class="space-y-1.5 max-h-36 overflow-y-auto"></div>
             </div>
@@ -206,11 +206,11 @@
           <label for="fcTopicSelect" class="text-xs font-semibold text-slate-400">Deck Filter:</label>
           <select id="fcTopicSelect" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"></select>
         </div>
-        <div class="flex items-center gap-3 text-xs">
+        <div class="flex flex-wrap items-center gap-3 text-xs">
           <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Mastered: <strong id="fcMasteredCount">0</strong></span>
           <span class="px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">Needs Review: <strong id="fcReviewCount">0</strong></span>
-          <button id="fcShuffleBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">🔀 Shuffle</button>
-          <button id="fcResetBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-300 transition">Reset</button>
+          <button type="button" id="fcShuffleBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">🔀 Shuffle</button>
+          <button type="button" id="fcResetBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-300 transition">Reset</button>
         </div>
       </div>
 
@@ -253,14 +253,14 @@
       <!-- Controls -->
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
-          <button id="fcPrevBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition">← Previous</button>
-          <button id="fcNextBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition">Next →</button>
+          <button type="button" id="fcPrevBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition">← Previous</button>
+          <button type="button" id="fcNextBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition">Next →</button>
         </div>
         <div class="flex items-center gap-2">
-          <button id="fcReviewBtn" class="px-4 py-2.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/40 text-xs font-semibold text-amber-300 transition">
+          <button type="button" id="fcReviewBtn" class="px-4 py-2.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/40 text-xs font-semibold text-amber-300 transition">
             ⟳ Needs Review (2)
           </button>
-          <button id="fcGotItBtn" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold text-white transition">
+          <button type="button" id="fcGotItBtn" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold text-white transition">
             ✔ Got It! (1)
           </button>
         </div>
@@ -280,7 +280,7 @@
             <option value="10">Quick 10-Question Sprint</option>
           </select>
         </div>
-        <button id="quizRestartBtn" class="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-semibold text-white transition">
+        <button type="button" id="quizRestartBtn" class="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-semibold text-white transition">
           Restart Quiz
         </button>
       </div>
@@ -307,7 +307,7 @@
         </div>
 
         <div class="mt-6 flex justify-end">
-          <button id="quizNextBtn" class="hidden px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-bold text-white transition">
+          <button type="button" id="quizNextBtn" class="hidden px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-bold text-white transition">
             Next Question →
           </button>
         </div>
@@ -319,10 +319,10 @@
         <div id="quizFinalScore" class="text-4xl font-extrabold text-white"></div>
         <p id="quizFinalVerdict" class="text-sm text-slate-300 max-w-md mx-auto"></p>
         <div class="flex flex-wrap justify-center gap-3 pt-4">
-          <button id="quizRetryMissedBtn" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white transition">
+          <button type="button" id="quizRetryMissedBtn" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white transition">
             Retry Missed Questions
           </button>
-          <button onclick="startNewQuiz()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-bold text-white transition">
+          <button type="button" id="quizFreshStartBtn" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-bold text-white transition">
             Start Fresh Exam
           </button>
         </div>
@@ -341,7 +341,7 @@
         <div class="flex items-center gap-3 text-xs">
           <span class="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-mono">Score: <strong id="matcherScore">0</strong></span>
           <span class="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-400 font-mono">Streak: <strong id="matcherStreak">0</strong>🔥</span>
-          <button id="matcherNewRoundBtn" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 font-semibold text-white transition">
+          <button type="button" id="matcherNewRoundBtn" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 font-semibold text-white transition">
             New 6-Pair Drill
           </button>
         </div>
