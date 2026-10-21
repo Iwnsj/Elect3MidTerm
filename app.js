@@ -162,45 +162,44 @@ function renderReviewerCards() {
   }
 
   container.innerHTML = filtered.map((topic, idx) => `
-    <article class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-lg transition hover:border-slate-700">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-        <div class="flex items-center gap-3">
-          <span class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/40 text-purple-300 font-bold flex items-center justify-center text-sm">${idx + 1}</span>
-          <div>
-            <h3 class="text-xl font-bold text-white">${escapeHtml(topic.title)}</h3>
-            <span class="text-xs text-emerald-400 font-medium">${escapeHtml(topic.badge)}</span>
+    <article class="bg-slate-900/90 border border-slate-800 rounded-xl sm:rounded-2xl p-3.5 sm:p-6 shadow-lg transition hover:border-slate-700 w-full max-w-full min-w-0 overflow-hidden">
+      <div class="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 mb-3">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-purple-500/20 border border-purple-500/40 text-purple-300 font-bold flex items-center justify-center text-xs sm:text-sm shrink-0">${idx + 1}</span>
+          <div class="min-w-0">
+            <h3 class="text-base sm:text-xl font-bold text-white truncate">${escapeHtml(topic.title)}</h3>
+            <span class="text-[11px] sm:text-xs text-emerald-400 font-medium">${escapeHtml(topic.badge)}</span>
           </div>
         </div>
-        <button type="button" data-quiz-topic="${topic.id}" class="jump-quiz-btn text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-purple-600/30 border border-slate-700 hover:border-purple-500 text-slate-200 transition">
+        <button type="button" data-quiz-topic="${topic.id}" class="jump-quiz-btn text-xs px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-purple-600/30 border border-slate-700 hover:border-purple-500 text-slate-200 transition shrink-0">
           Quiz This Topic →
         </button>
       </div>
 
-      <p class="text-slate-300 text-sm leading-relaxed mb-4">${escapeHtml(topic.summary)}</p>
+      <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 break-words">${escapeHtml(topic.summary)}</p>
 
       <!-- Key Takeaways -->
-      <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 mb-5">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 mb-2.5">Key Exam Takeaways</h4>
-        <ul class="space-y-1.5 text-sm text-slate-300">
-          ${topic.keyPoints.map(kp => `<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✔</span><span>${escapeHtml(kp)}</span></li>`).join("")}
+      <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3 sm:p-4 mb-3 sm:mb-4 w-full max-w-full">
+        <h4 class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-purple-400 mb-2">Key Exam Takeaways</h4>
+        <ul class="space-y-1.5 text-xs sm:text-sm text-slate-300">
+          ${topic.keyPoints.map(kp => `<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5 shrink-0">✔</span><span class="break-words">${escapeHtml(kp)}</span></li>`).join("")}
         </ul>
       </div>
 
       <!-- Important APIs Table -->
-      <div class="mb-5 overflow-x-auto">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Essential Properties, Methods & Attributes</h4>
-        <table class="w-full text-left border-collapse text-xs">
+      <div class="mb-3 sm:mb-4 overflow-x-auto w-full max-w-full rounded-lg border border-slate-800/80">
+        <table class="w-full text-left border-collapse text-xs min-w-[280px]">
           <thead>
-            <tr class="border-b border-slate-800 text-slate-400">
-              <th class="py-2 pr-4 font-semibold">API / Method / Attribute</th>
-              <th class="py-2 font-semibold">Purpose</th>
+            <tr class="border-b border-slate-800 bg-slate-950/60 text-slate-400">
+              <th class="py-2 px-2.5 sm:px-3 font-semibold whitespace-nowrap">API / Method / Attribute</th>
+              <th class="py-2 px-2.5 sm:px-3 font-semibold">Purpose</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-800/60">
             ${topic.apis.map(api => `
               <tr>
-                <td class="py-2 pr-4 font-mono text-amber-300 whitespace-nowrap">${escapeHtml(api.name)}</td>
-                <td class="py-2 text-slate-300">${escapeHtml(api.desc)}</td>
+                <td class="py-2 px-2.5 sm:px-3 font-mono text-amber-300 whitespace-nowrap text-[11px] sm:text-xs align-top">${escapeHtml(api.name)}</td>
+                <td class="py-2 px-2.5 sm:px-3 text-slate-300 text-[11px] sm:text-xs align-top break-words">${escapeHtml(api.desc)}</td>
               </tr>
             `).join("")}
           </tbody>
@@ -208,21 +207,21 @@ function renderReviewerCards() {
       </div>
 
       <!-- Side-by-Side XML & Kotlin Snippets -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div class="code-container">
-          <div class="flex items-center justify-between px-3.5 py-2 bg-slate-900 border-b border-slate-800">
-            <span class="text-xs font-mono text-sky-400 font-semibold">XML Layout / Resource</span>
-            <button type="button" data-code="${encodeURIComponent(topic.xmlCode)}" class="copy-code-btn text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Copy XML</button>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full min-w-0">
+        <div class="code-container w-full max-w-full min-w-0">
+          <div class="flex items-center justify-between px-3 py-1.5 sm:px-3.5 sm:py-2 bg-slate-900 border-b border-slate-800">
+            <span class="text-[11px] sm:text-xs font-mono text-sky-400 font-semibold truncate">XML Layout / Resource</span>
+            <button type="button" data-code="${encodeURIComponent(topic.xmlCode)}" class="copy-code-btn text-[11px] sm:text-xs px-2 sm:px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition shrink-0">Copy XML</button>
           </div>
-          <pre class="p-3.5 text-xs font-mono text-slate-200 code-scroll overflow-x-auto"><code>${escapeHtml(topic.xmlCode)}</code></pre>
+          <pre class="p-2.5 sm:p-3.5 text-[11px] sm:text-xs font-mono text-slate-200 code-scroll overflow-x-auto w-full max-w-full"><code>${escapeHtml(topic.xmlCode)}</code></pre>
         </div>
 
-        <div class="code-container">
-          <div class="flex items-center justify-between px-3.5 py-2 bg-slate-900 border-b border-slate-800">
-            <span class="text-xs font-mono text-purple-400 font-semibold">Kotlin Implementation</span>
-            <button type="button" data-code="${encodeURIComponent(topic.kotlinCode)}" class="copy-code-btn text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Copy Kotlin</button>
+        <div class="code-container w-full max-w-full min-w-0">
+          <div class="flex items-center justify-between px-3 py-1.5 sm:px-3.5 sm:py-2 bg-slate-900 border-b border-slate-800">
+            <span class="text-[11px] sm:text-xs font-mono text-purple-400 font-semibold truncate">Kotlin Implementation</span>
+            <button type="button" data-code="${encodeURIComponent(topic.kotlinCode)}" class="copy-code-btn text-[11px] sm:text-xs px-2 sm:px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition shrink-0">Copy Kotlin</button>
           </div>
-          <pre class="p-3.5 text-xs font-mono text-slate-200 code-scroll overflow-x-auto"><code>${escapeHtml(topic.kotlinCode)}</code></pre>
+          <pre class="p-2.5 sm:p-3.5 text-[11px] sm:text-xs font-mono text-slate-200 code-scroll overflow-x-auto w-full max-w-full"><code>${escapeHtml(topic.kotlinCode)}</code></pre>
         </div>
       </div>
     </article>
@@ -298,7 +297,7 @@ function initSimulator() {
     const time = now.toTimeString().split(" ")[0] + "." + String(now.getMilliseconds()).padStart(3, "0");
     const color = level === "I" ? "text-emerald-400" : level === "W" ? "text-amber-400" : "text-sky-400";
     const line = document.createElement("div");
-    line.className = `font-mono text-xs ${color}`;
+    line.className = `font-mono text-[11px] sm:text-xs ${color} break-all whitespace-pre-wrap`;
     line.textContent = `${time}  ${level}/${tag}: ${message}`;
     logBox.appendChild(line);
     logBox.scrollTop = logBox.scrollHeight;
