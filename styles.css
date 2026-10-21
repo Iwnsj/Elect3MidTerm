@@ -131,3 +131,207 @@ code, pre, .font-mono {
   25% { transform: translateX(-5px); }
   75% { transform: translateX(5px); }
 }
+
+/* ========================================
+   RESPONSIVE / MOBILE STYLES
+   ======================================== */
+
+/* --- Navigation tabs: horizontal scroll on mobile --- */
+@media (max-width: 640px) {
+  /* Header padding tightened on mobile */
+  header .max-w-7xl {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Nav tabs scrollable row */
+  header .flex.flex-wrap.gap-2 {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+  header .flex.flex-wrap.gap-2::-webkit-scrollbar {
+    display: none;
+  }
+  header .nav-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  /* Mastery badge: smaller */
+  #masteryBadge {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Main content padding reduced */
+  main {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Reviewer cards: tighter spacing */
+  #reviewerCardsContainer {
+    gap: 1rem !important;
+  }
+  #reviewerCardsContainer > div {
+    padding: 0.75rem !important;
+    border-radius: 1rem;
+  }
+
+  /* Topic pills smaller on mobile */
+  #topicFilterPills button,
+  #topicFilterPills .topic-pill {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Tables responsive: horizontal scroll */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    font-size: 0.7rem;
+  }
+  table th, table td {
+    padding: 0.35rem 0.5rem;
+  }
+
+  /* Code containers: constrain width */
+  .code-container,
+  pre {
+    max-width: calc(100vw - 2rem);
+    overflow-x: auto;
+    font-size: 0.65rem !important;
+  }
+
+  /* Code block tabs smaller */
+  .code-container button,
+  .code-container .tab-btn {
+    font-size: 0.6rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  /* Sandbox phone frame: full width, reduced border */
+  .phone-frame {
+    border-width: 4px;
+    border-radius: 1.25rem;
+    padding: 0.5rem !important;
+  }
+
+  /* Logcat console: reduce height on mobile */
+  #logcatOutput {
+    max-height: 200px;
+  }
+  .lg\:col-span-6.bg-\[\#070b14\] {
+    height: auto !important;
+    max-height: 280px;
+  }
+
+  /* Flashcard: reduce padding and min-height */
+  .flashcard-face {
+    padding: 1rem;
+  }
+  .flashcard-inner {
+    min-height: 260px;
+  }
+
+  /* Quiz panel: tighter padding */
+  #quizActivePanel {
+    padding: 1rem !important;
+  }
+  #quizSummaryPanel {
+    padding: 1.25rem !important;
+  }
+
+  /* Footer: smaller */
+  footer {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.6rem;
+    margin-top: 1.5rem !important;
+  }
+
+  /* Matcher grid: single column guaranteed */
+  #matcherTasksCol button,
+  #matcherCodesCol button {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Generic spacing reductions */
+  .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+  }
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+  }
+
+  /* Header subtitle line: wrap nicely */
+  header p.text-xs {
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  /* Search bar tighter */
+  #reviewerSearchInput {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Sandbox section tighter */
+  #sandboxSimulatorSection {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Tablet adjustments (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  main {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .flashcard-inner {
+    min-height: 300px;
+  }
+
+  /* Code containers readable */
+  pre, .code-scroll {
+    font-size: 0.75rem;
+  }
+}
+
+/* Ensure images and embeds don't overflow */
+img, video, iframe, embed, object {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent text overflow in code snippets */
+pre {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Touch-friendly: larger tap targets on mobile */
+@media (pointer: coarse) {
+  button, .nav-tab, a, label {
+    min-height: 36px;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-width: 18px;
+    min-height: 18px;
+  }
+}

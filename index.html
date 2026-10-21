@@ -39,31 +39,31 @@
     </div>
 
     <!-- Navigation Mode Tabs -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex flex-wrap gap-2">
-      <button type="button" data-mode="reviewer" class="nav-tab active px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
-        📖 1. Reviewer &amp; Live Sandbox
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 pb-2 sm:pb-3 flex gap-2 overflow-x-auto scrollbar-hide" style="-webkit-overflow-scrolling: touch; scrollbar-width: none;">
+      <button type="button" data-mode="reviewer" class="nav-tab active px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-[11px] sm:text-sm font-semibold text-slate-300 transition cursor-pointer whitespace-nowrap flex-shrink-0">
+        📖 Reviewer
       </button>
-      <button type="button" data-mode="flashcards" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
-        🗂️ 2. 3D Flashcards (32)
+      <button type="button" data-mode="flashcards" class="nav-tab px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-[11px] sm:text-sm font-semibold text-slate-300 transition cursor-pointer whitespace-nowrap flex-shrink-0">
+        🗂️ Flashcards
       </button>
-      <button type="button" data-mode="quiz" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
-        📝 3. Practice Quiz (24)
+      <button type="button" data-mode="quiz" class="nav-tab px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-[11px] sm:text-sm font-semibold text-slate-300 transition cursor-pointer whitespace-nowrap flex-shrink-0">
+        📝 Quiz (24)
       </button>
-      <button type="button" data-mode="matcher" class="nav-tab px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-xs sm:text-sm font-semibold text-slate-300 transition cursor-pointer">
-        ⚡ 4. Syntax Matcher
+      <button type="button" data-mode="matcher" class="nav-tab px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-slate-800 bg-slate-900/70 text-[11px] sm:text-sm font-semibold text-slate-300 transition cursor-pointer whitespace-nowrap flex-shrink-0">
+        ⚡ Matcher
       </button>
     </div>
   </header>
 
   <!-- Main Content Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-4 md:px-6 py-3 sm:py-6">
 
     <!-- ==========================================
          MODE 1: REVIEWER & SANDBOX SIMULATOR
          ========================================== -->
-    <section id="mode-reviewer" class="mode-section space-y-8">
+    <section id="mode-reviewer" class="mode-section space-y-4 sm:space-y-8">
       <!-- Search & Topic Filter Bar -->
-      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl sm:rounded-2xl p-3 sm:p-5 space-y-3 sm:space-y-4">
         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
           <div class="relative flex-1">
             <input
@@ -81,10 +81,10 @@
       </div>
 
       <!-- Reviewer Cards List -->
-      <div id="reviewerCardsContainer" class="space-y-6"></div>
+      <div id="reviewerCardsContainer" class="space-y-4 sm:space-y-6"></div>
 
       <!-- Live Interactive Widget & Logcat Sandbox Simulator -->
-      <div id="sandboxSimulatorSection" class="bg-slate-900/95 border border-purple-500/40 rounded-2xl p-5 sm:p-6 shadow-xl">
+      <div id="sandboxSimulatorSection" class="bg-slate-900/95 border border-purple-500/40 rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
             <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -97,9 +97,9 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
           <!-- Simulated Android Device Screen -->
-          <div class="lg:col-span-6 phone-frame p-4 space-y-4">
+          <div class="lg:col-span-6 phone-frame p-2.5 sm:p-4 space-y-3 sm:space-y-4">
             <!-- Toolbar & Options Menu -->
             <div class="bg-purple-900/60 border border-purple-500/40 rounded-xl px-3.5 py-2.5 flex items-center justify-between">
               <span class="text-xs font-bold text-white">Toolbar (supportActionBar)</span>
@@ -183,7 +183,7 @@
           </div>
 
           <!-- Simulated Android Studio Logcat Console -->
-          <div class="lg:col-span-6 bg-[#070b14] border border-slate-800 rounded-2xl p-4 flex flex-col h-[520px]">
+          <div class="lg:col-span-6 bg-[#070b14] border border-slate-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 flex flex-col h-[300px] sm:h-[400px] lg:h-[520px]">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
               <span class="text-xs font-mono font-bold text-emerald-400">▶ Android Studio Logcat (package:mine)</span>
               <span class="text-[11px] font-mono text-slate-500">API 34 • Kotlin</span>
@@ -200,8 +200,8 @@
     <!-- ==========================================
          MODE 2: INTERACTIVE 3D FLASHCARDS
          ========================================== -->
-    <section id="mode-flashcards" class="mode-section hidden max-w-3xl mx-auto space-y-6">
-      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+    <section id="mode-flashcards" class="mode-section hidden max-w-3xl mx-auto space-y-4 sm:space-y-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         <div class="flex items-center gap-3">
           <label for="fcTopicSelect" class="text-xs font-semibold text-slate-400">Deck Filter:</label>
           <select id="fcTopicSelect" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"></select>
@@ -270,9 +270,9 @@
     <!-- ==========================================
          MODE 3: PRACTICE QUIZ & EXAM MODE
          ========================================== -->
-    <section id="mode-quiz" class="mode-section hidden max-w-3xl mx-auto space-y-6">
+    <section id="mode-quiz" class="mode-section hidden max-w-3xl mx-auto space-y-4 sm:space-y-6">
       <!-- Quiz Config Bar -->
-      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         <div class="flex flex-wrap items-center gap-3">
           <select id="quizTopicSelect" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"></select>
           <select id="quizLengthSelect" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white">
@@ -286,7 +286,7 @@
       </div>
 
       <!-- Active Quiz Panel -->
-      <div id="quizActivePanel" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+      <div id="quizActivePanel" class="bg-slate-900/90 border border-slate-800 rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl">
         <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
           <span id="quizProgressText">Question 1 of 24</span>
           <span id="quizScoreLive" class="text-emerald-400 font-bold">Score: 0</span>
@@ -314,7 +314,7 @@
       </div>
 
       <!-- Quiz Summary Panel -->
-      <div id="quizSummaryPanel" class="hidden bg-slate-900/90 border border-slate-800 rounded-2xl p-8 text-center space-y-4">
+      <div id="quizSummaryPanel" class="hidden bg-slate-900/90 border border-slate-800 rounded-xl sm:rounded-2xl p-4 sm:p-8 text-center space-y-3 sm:space-y-4">
         <div class="text-xs font-mono uppercase tracking-widest text-purple-400">Exam Completed</div>
         <div id="quizFinalScore" class="text-4xl font-extrabold text-white"></div>
         <p id="quizFinalVerdict" class="text-sm text-slate-300 max-w-md mx-auto"></p>
@@ -332,8 +332,8 @@
     <!-- ==========================================
          MODE 4: QUICK SYNTAX & METHOD MATCHER
          ========================================== -->
-    <section id="mode-matcher" class="mode-section hidden max-w-4xl mx-auto space-y-6">
-      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4">
+    <section id="mode-matcher" class="mode-section hidden max-w-4xl mx-auto space-y-4 sm:space-y-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl sm:rounded-2xl p-3 sm:p-5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
         <div>
           <h2 class="text-base font-bold text-white">⚡ Android Kotlin Syntax &amp; Callback Matcher</h2>
           <p id="matcherStatusMsg" class="text-xs text-slate-400 mt-0.5">Select an Android task on the left, then click its matching Kotlin method or property on the right.</p>
@@ -362,7 +362,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-800/80 py-5 mt-12 text-center text-xs text-slate-500">
+  <footer class="border-t border-slate-800/80 py-3 sm:py-5 mt-6 sm:mt-12 text-center text-[10px] sm:text-xs text-slate-500">
     KotlinDroid Studio Prep • Built for Android Studio (Kotlin) Exam Review &amp; GitHub Pages Deployment
   </footer>
 
